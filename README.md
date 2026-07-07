@@ -1,4 +1,4 @@
-# MCGS Site — Reusable React Corporate Website Template
+# MCGS Site — Reusable React Website Template
 
 A professional, reusable corporate website template built with React 19, Vite, and Tailwind CSS v4.  
 Currently deployed for **Marbel Contracting & General Services**.
