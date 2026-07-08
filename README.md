@@ -87,8 +87,22 @@ Open that file and update:
 - Industries served
 - Hero/About images
 - CTA copy
+- Web3Forms access key (contact form submissions)
 
 No component logic needs to change between clients.
+
+### Setting up the contact form
+
+The `Contact` component submits directly to [Web3Forms](https://web3forms.com) — no backend required.
+
+1. Get a free access key at https://web3forms.com
+2. Set it in `src/config/company.js`:
+
+```js
+web3formsKey: 'your-access-key-here',
+```
+
+Submissions are emailed to the address registered with that key.
 
 ### Swapping brand colors
 
@@ -137,6 +151,7 @@ mcgs-site/
 │   │   ├── Services.jsx
 │   │   ├── Industries.jsx
 │   │   ├── CTA.jsx
+│   │   ├── Contact.jsx
 │   │   └── Footer.jsx
 │   ├── config/
 │   │   └── company.js        ← edit this for each client
