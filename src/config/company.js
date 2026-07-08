@@ -53,9 +53,9 @@ const company = {
   aboutImage:
     'https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=900&q=80',
   aboutParagraphs: [
-    'Marbel Contracting & General Services is a Canadian company specializing in reliable manpower supply and drilling services for industrial projects across Western Canada.',
-    'We understand that every project comes with its own set of challenges. Our team brings decades of combined experience in oil & gas, mining, and heavy civil construction — delivering qualified personnel and technical services when and where you need them.',
-    'Locally owned and operated, we are committed to safety, quality, and building long-term relationships with our clients.',
+    'Founded in 2018, Marbel Contracting & General Services (MCGS) is a Filipino-owned Canadian company providing specialized workforce solutions and drilling services across Western Canada. Serving the construction, utility, industrial, energy, and infrastructure sectors, MCGS was established with a clear mission: to bridge the growing demand for qualified skilled trades and technical professionals. By delivering dependable manpower and specialized field services, the company enables clients to complete projects safely, efficiently, and strictly on schedule.',
+    "As a business built on the core values of integrity, resilience, respect, and hard work, MCGS takes pride in fostering long-term partnerships with clients, employees, and industry partners alike. Their multicultural team proudly reflects the diversity of Canada's workforce. Together, they share a deeply ingrained, common commitment to professionalism, accountability, and operational excellence in everything they do.",
+    'Whether supplying skilled manpower or delivering specialized drilling services, MCGS remains dedicated to helping clients overcome complex workforce challenges and maintain peak productivity. By consistently providing reliable support, they ensure partners can successfully execute intricate projects with total confidence.',
   ],
 
   // ─── Services ───────────────────────────────────────────────────────────────
