@@ -6,11 +6,13 @@
 
 import {
   FaHardHat,
-  FaBuilding,
-  FaClipboardList,
 } from 'react-icons/fa'
 import {
   GiDrill,
+  GiDigHole,
+  GiPipes,
+  GiWaterDrop,
+  GiCargoCrane,
   GiMining,
   GiOilDrum,
   GiCrane,
@@ -63,30 +65,44 @@ const company = {
     {
       id: 'manpower',
       icon: FaHardHat,
-      title: 'Manpower Supply',
+      title: 'Manpower Solutions',
       description:
-        'Qualified tradespeople, labourers, and supervisors deployed on short notice. We maintain a roster of vetted, safety-trained personnel ready for your next project.',
+        'Highly qualified, experienced professionals supplied to the construction, utility, and infrastructure sectors — vetted, safety-trained, and ready for technically demanding projects.',
     },
     {
-      id: 'drilling',
+      id: 'hdd',
       icon: GiDrill,
-      title: 'Drilling Services',
+      title: 'Horizontal Directional Drilling',
       description:
-        'Directional drilling, water-well drilling, and geotechnical drilling for exploration and construction projects across Alberta and beyond.',
+        'Skilled crews for HDD operations, delivering precise trenchless installation of pipelines and utilities beneath roads, waterways, and sensitive terrain.',
     },
     {
-      id: 'contracting',
-      icon: FaBuilding,
-      title: 'General Contracting',
+      id: 'trenchless',
+      icon: GiDigHole,
+      title: 'Trenchless Construction',
       description:
-        'Full-scope general contracting for civil, industrial, and commercial projects. From site preparation through final inspection, we manage it all.',
+        'Specialized personnel for auger boring, pipe jacking, and microtunneling — minimizing surface disruption on complex trenchless construction projects.',
     },
     {
-      id: 'support',
-      icon: FaClipboardList,
-      title: 'Project Support',
+      id: 'underground-utilities',
+      icon: GiPipes,
+      title: 'Underground Utility Installation',
       description:
-        'Site supervision, logistics coordination, procurement, and project management support to keep your operations running on time and on budget.',
+        'Experienced tradespeople for sewer and watermain installation, gas distribution, and electrical utility work, executed to code and on schedule.',
+    },
+    {
+      id: 'hydro-excavation',
+      icon: GiWaterDrop,
+      title: 'Hydro Excavation',
+      description:
+        'Trained hydro excavation crews providing safe, precise, non-destructive digging around existing underground infrastructure.',
+    },
+    {
+      id: 'heavy-civil',
+      icon: GiCargoCrane,
+      title: 'Heavy Civil Construction',
+      description:
+        'Manpower for heavy civil construction projects, supporting general contractors and project owners with skilled labour from mobilization through completion.',
     },
   ],
 

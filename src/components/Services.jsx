@@ -44,11 +44,12 @@ export default function Services() {
           Our Services
         </h2>
         <p className="text-gray-500 text-center max-w-2xl mx-auto mb-16">
-          End-to-end support for industrial projects — from providing the right
-          people to executing the work with precision.
+          A specialized manpower solutions provider supplying highly qualified,
+          experienced professionals for technically demanding construction,
+          utility, and infrastructure projects.
         </p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {company.services.map((service) => (
             <ServiceCard key={service.id} service={service} />
           ))}
