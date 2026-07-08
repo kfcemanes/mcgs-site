@@ -17,7 +17,7 @@ export default function CTA() {
         </h2>
 
         <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">
-          Tell us about your project. We respond within one business day.
+          Tell us about your project. We’ll get back to you promptly with a quote and next steps.
         </p>
 
         <a

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import company from '../config/company'
+import logo from '../assets/mcgs-logo-transparent.png'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -21,13 +22,8 @@ export default function Navbar() {
     >
       <nav className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
         {/* Logo */}
-        <a
-          href="#hero"
-          className={`font-heading font-bold text-xl tracking-tight transition-colors duration-300 ${
-            scrolled ? 'text-brand-blue' : 'text-white'
-          }`}
-        >
-          {company.shortName}
+        <a href="#hero" className="flex items-center gap-2">
+          <img src={logo} alt={company.shortName} className="h-12 w-auto" />
         </a>
 
         {/* Desktop links */}

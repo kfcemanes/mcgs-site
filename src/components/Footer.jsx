@@ -1,5 +1,6 @@
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
 import company from '../config/company'
+import logo from '../assets/mcgs-logo-transparent.png'
 
 export default function Footer() {
   return (
@@ -8,9 +9,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand column */}
           <div>
-            <span className="font-heading font-extrabold text-2xl tracking-tight">
-              {company.shortName}
-            </span>
+            <img src={logo} alt={company.shortName} className="h-14 w-auto" />
             <p className="mt-3 text-gray-400 text-sm leading-relaxed max-w-xs">
               {company.companyName}
             </p>
