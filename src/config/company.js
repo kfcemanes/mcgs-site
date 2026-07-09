@@ -56,9 +56,8 @@ const company = {
   aboutImage:
     'https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=900&q=80',
   aboutParagraphs: [
-    'Founded in 2018, Marbel Contracting & General Services (MCGS) is a Filipino-owned Canadian company providing specialized workforce solutions and drilling services across Western Canada. Serving the construction, utility, industrial, energy, and infrastructure sectors, MCGS was established with a clear mission: to bridge the growing demand for qualified skilled trades and technical professionals. By delivering dependable manpower and specialized field services, the company enables clients to complete projects safely, efficiently, and strictly on schedule.',
-    "As a business built on the core values of integrity, resilience, respect, and hard work, MCGS takes pride in fostering long-term partnerships with clients, employees, and industry partners alike. Their multicultural team proudly reflects the diversity of Canada's workforce. Together, they share a deeply ingrained, common commitment to professionalism, accountability, and operational excellence in everything they do.",
-    'Whether supplying skilled manpower or delivering specialized drilling services, MCGS remains dedicated to helping clients overcome complex workforce challenges and maintain peak productivity. By consistently providing reliable support, they ensure partners can successfully execute intricate projects with total confidence.',
+    'Founded in 2018, Marbel Contracting & General Services (MCGS) is a Filipino-owned Canadian company providing skilled workforce solutions and specialized drilling services across Western Canada. Serving the construction, utility, industrial, energy, and infrastructure sectors, MCGS helps clients meet workforce demands and deliver projects safely, efficiently, and on schedule.',
+    'Built on the values of integrity, resilience, respect, and hard work, MCGS is committed to professionalism, accountability, and long-term partnerships. With a diverse, multicultural team, the company provides reliable manpower and field services that help clients overcome workforce challenges and complete complex projects with confidence.',
   ],
 
   // ─── Services ───────────────────────────────────────────────────────────────
