@@ -32,7 +32,7 @@ const company = {
   phone: '1.403.499.8780',
   email: 'mcgsphilcan@gmail.com',
   address: '164 Castlegen Way NE, Calgary AB T3J 1V6',
-  web3formsKey: '33e641f1-b5aa-4636-9ab5-9f689c68f694',
+  web3formsKey: '1321916d-1dee-48dc-b33c-205ba0365c46',
 
   // ─── Brand ──────────────────────────────────────────────────────────────────
   primaryColor: '#184B87',
