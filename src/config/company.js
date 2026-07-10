@@ -18,6 +18,8 @@ import {
   GiCrane,
   GiRoad,
 } from 'react-icons/gi'
+import york1Logo from '../assets/york1-logo.svg'
+import sovereignLogo from '../assets/sovereign-logo.png'
 
 const company = {
   // ─── Identity ───────────────────────────────────────────────────────────────
@@ -43,6 +45,7 @@ const company = {
     { label: 'About', href: '#about' },
     { label: 'Services', href: '#services' },
     { label: 'Industries', href: '#industries' },
+    { label: 'Clients', href: '#clients' },
     { label: 'Contact', href: '#contact' },
   ],
 
@@ -112,6 +115,24 @@ const company = {
     { id: 'oil-gas', icon: GiOilDrum, label: 'Oil & Gas' },
     { id: 'construction', icon: GiCrane, label: 'Construction' },
     { id: 'infrastructure', icon: GiRoad, label: 'Infrastructure' },
+  ],
+
+  // ─── Clients ────────────────────────────────────────────────────────────────
+  clients: [
+    {
+      id: 'york1',
+      name: 'York1',
+      location: 'Toronto, ON',
+      logo: york1Logo,
+      url: 'https://york1.com/',
+    },
+    {
+      id: 'sovereign',
+      name: 'Sovereign',
+      location: 'Bolton, ON',
+      logo: sovereignLogo,
+      url: 'https://sovereign.build/',
+    },
   ],
 
   // ─── CTA ────────────────────────────────────────────────────────────────────

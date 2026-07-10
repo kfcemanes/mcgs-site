@@ -23,7 +23,7 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-2">
-          <img src={logo} alt={company.shortName} className="h-12 w-auto" />
+          <img src={logo} alt={company.shortName} className="h-16 w-auto" />
         </a>
 
         {/* Desktop links */}
