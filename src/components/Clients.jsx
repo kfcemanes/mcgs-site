@@ -9,13 +9,13 @@ function ClientTile({ client }) {
   return (
     <Wrapper
       {...wrapperProps}
-      className={`group flex flex-col items-center justify-center gap-4 p-10 bg-white border border-gray-100 rounded-sm shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${client.url ? 'cursor-pointer' : 'cursor-default'}`}
+      className={`group flex flex-col items-center justify-center gap-4 p-6 sm:p-10 bg-white border border-gray-100 rounded-sm shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${client.url ? 'cursor-pointer' : 'cursor-default'}`}
     >
       {client.logo ? (
         <img
           src={client.logo}
           alt={client.name}
-          className="h-20 w-auto max-w-[200px] object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+          className="max-h-20 w-auto max-w-full sm:max-w-[200px] object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
         />
       ) : (
         <span className="font-heading font-semibold text-brand-text text-lg">
