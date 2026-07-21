@@ -9,7 +9,7 @@ function ClientTile({ client }) {
   return (
     <Wrapper
       {...wrapperProps}
-      className={`group flex flex-col items-center justify-center gap-4 p-6 sm:p-10 bg-white border border-gray-100 rounded-sm shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${client.url ? 'cursor-pointer' : 'cursor-default'}`}
+      className={`group flex flex-col items-center justify-center gap-4 p-6 sm:p-10 w-full sm:w-[calc(50%-0.75rem)] md:w-64 bg-white border border-gray-100 rounded-sm shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 ${client.url ? 'cursor-pointer' : 'cursor-default'}`}
     >
       {client.logo ? (
         <img
@@ -45,7 +45,7 @@ export default function Clients() {
           Trusted by leading contractors and project owners across Canada.
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {company.clients.map((client) => (
             <ClientTile key={client.id} client={client} />
           ))}
