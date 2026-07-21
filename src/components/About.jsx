@@ -47,13 +47,13 @@ export default function About() {
             </div>
 
             {/* Trust badges */}
-            <div className="mt-10 flex flex-wrap gap-6">
+            <div className="mt-10 flex flex-wrap justify-center gap-10 sm:gap-14">
               {[
                 { value: 'Safety', label: 'First Priority' },
-                { value: 'Alberta', label: 'Based & Operated' },
+                { value: 'Canadian', label: 'Owned & Operated' },
                 { value: 'Proven', label: 'Track Record' },
               ].map((badge) => (
-                <div key={badge.value} className="flex flex-col">
+                <div key={badge.value} className="flex flex-col text-center">
                   <span
                     className="font-heading font-bold text-xl"
                     style={{ color: 'var(--color-brand-blue)' }}

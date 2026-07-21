@@ -5,28 +5,26 @@
  */
 
 import {
-  FaHardHat,
-} from 'react-icons/fa'
-import {
   GiDrill,
-  GiDigHole,
-  GiPipes,
-  GiWaterDrop,
-  GiCargoCrane,
+  GiBulldozer,
+  GiHammerDrop,
   GiMining,
+  GiPipes,
+  GiConcreteBag,
   GiOilDrum,
   GiCrane,
-  GiRoad,
+  GiSuspensionBridge,
 } from 'react-icons/gi'
 import york1Logo from '../assets/york1-logo.svg'
 import sovereignLogo from '../assets/sovereign-logo.png'
+import elliottLogo from '../assets/elliott-logo.png'
 
 const company = {
   // ─── Identity ───────────────────────────────────────────────────────────────
   companyName: 'Marbel Contracting & General Services',
   shortName: 'MCGS',
-  tagline: 'Reliable Manpower & Drilling Solutions',
-  subtagline: 'Supporting Canadian Industrial Projects',
+  tagline: 'Reliable Manpower for Horizontal Tunneling & Drilling Solutions',
+  subtagline: 'Supporting Canadian underground horizontal drilling projects',
   businessNumber: '',
   gstNumber: '',
 
@@ -45,6 +43,7 @@ const company = {
     { label: 'About', href: '#about' },
     { label: 'Services', href: '#services' },
     { label: 'Industries', href: '#industries' },
+    { label: 'Gallery', href: '#gallery' },
     { label: 'Clients', href: '#clients' },
     { label: 'Contact', href: '#contact' },
   ],
@@ -59,53 +58,53 @@ const company = {
   aboutImage:
     'https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=900&q=80',
   aboutParagraphs: [
-    'Founded in 2018, Marbel Contracting & General Services (MCGS) is a Filipino-owned Canadian company providing skilled workforce solutions and specialized drilling services across Western Canada. Serving the construction, utility, industrial, energy, and infrastructure sectors, MCGS helps clients meet workforce demands and deliver projects safely, efficiently, and on schedule.',
+    'Founded in 2018, Marbel Contracting & General Services (MCGS) is a Canadian-owned company providing a skilled workforce specialized in horizontal tunneling and drilling solutions across Canada. Serving the construction, utility, industrial, energy, and infrastructure sectors, MCGS helps clients meet workforce demands and deliver projects safely, efficiently, and on schedule.',
     'Built on the values of integrity, resilience, respect, and hard work, MCGS is committed to professionalism, accountability, and long-term partnerships. With a diverse, multicultural team, the company provides reliable manpower and field services that help clients overcome workforce challenges and complete complex projects with confidence.',
   ],
 
   // ─── Services ───────────────────────────────────────────────────────────────
   services: [
     {
-      id: 'manpower',
-      icon: FaHardHat,
-      title: 'Manpower Solutions',
-      description:
-        'Highly qualified, experienced professionals supplied to the construction, utility, and infrastructure sectors — vetted, safety-trained, and ready for technically demanding projects.',
-    },
-    {
-      id: 'hdd',
+      id: 'augering',
       icon: GiDrill,
-      title: 'Horizontal Directional Drilling',
+      title: 'Horizontal Augering / Jack & Bore',
       description:
-        'Skilled crews for HDD operations, delivering precise trenchless installation of pipelines and utilities beneath roads, waterways, and sensitive terrain.',
+        'Skilled crews for jack-and-bore auger operations, installing steel casings beneath roads, rail, and embankments with minimal surface disruption.',
     },
     {
-      id: 'trenchless',
-      icon: GiDigHole,
-      title: 'Trenchless Construction',
+      id: 'gbm',
+      icon: GiBulldozer,
+      title: 'Guided Boring Machine (GBM) Installation',
       description:
-        'Specialized personnel for auger boring, pipe jacking, and microtunneling — minimizing surface disruption on complex trenchless construction projects.',
+        'Experienced operators for guided boring machine installs, delivering accurate, line-and-grade-controlled bores for gravity sewers and utility crossings.',
     },
     {
-      id: 'underground-utilities',
+      id: 'pipe-ramming',
+      icon: GiHammerDrop,
+      title: 'Pipe Ramming (Guided & Unguided)',
+      description:
+        'Trained personnel for guided and unguided pipe ramming, driving casings through difficult ground and beneath obstacles where other methods fall short.',
+    },
+    {
+      id: 'hand-tunneling',
+      icon: GiMining,
+      title: 'Hand Tunneling / Hand Mining',
+      description:
+        'Specialized labour for hand tunneling and hand mining in confined or sensitive conditions, excavating with precision where mechanized methods aren’t feasible.',
+    },
+    {
+      id: 'product-pipe',
       icon: GiPipes,
-      title: 'Underground Utility Installation',
+      title: 'Product Pipe Installation',
       description:
-        'Experienced tradespeople for sewer and watermain installation, gas distribution, and electrical utility work, executed to code and on schedule.',
+        'Qualified tradespeople for product and carrier pipe installation, placement, and tie-ins — completed to specification and on schedule.',
     },
     {
-      id: 'hydro-excavation',
-      icon: GiWaterDrop,
-      title: 'Hydro Excavation',
+      id: 'casing-grouting',
+      icon: GiConcreteBag,
+      title: 'Casing Grouting',
       description:
-        'Trained hydro excavation crews providing safe, precise, non-destructive digging around existing underground infrastructure.',
-    },
-    {
-      id: 'heavy-civil',
-      icon: GiCargoCrane,
-      title: 'Heavy Civil Construction',
-      description:
-        'Manpower for heavy civil construction projects, supporting general contractors and project owners with skilled labour from mobilization through completion.',
+        'Crews for casing grouting and annular space filling, ensuring long-term stability and protection of installed casings and product pipes.',
     },
   ],
 
@@ -114,7 +113,7 @@ const company = {
     { id: 'mining', icon: GiMining, label: 'Mining' },
     { id: 'oil-gas', icon: GiOilDrum, label: 'Oil & Gas' },
     { id: 'construction', icon: GiCrane, label: 'Construction' },
-    { id: 'infrastructure', icon: GiRoad, label: 'Infrastructure' },
+    { id: 'civil-infrastructure', icon: GiSuspensionBridge, label: 'Civil Infrastructure' },
   ],
 
   // ─── Clients ────────────────────────────────────────────────────────────────
@@ -132,6 +131,12 @@ const company = {
       location: 'Bolton, ON',
       logo: sovereignLogo,
       url: 'https://sovereign.build/',
+    },
+    {
+      id: 'elliott',
+      name: 'Elliott Underground',
+      logo: elliottLogo,
+      url: 'https://elliottunderground.com/',
     },
   ],
 

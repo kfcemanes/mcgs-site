@@ -28,11 +28,6 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
-        {/* Eyebrow */}
-        <p className="text-brand-red font-semibold text-sm tracking-[0.2em] uppercase mb-6">
-          {company.companyName}
-        </p>
-
         <h1 className="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
           {company.tagline.split(' & ').map((part, i, arr) => (
             <span key={i}>

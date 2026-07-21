@@ -39,7 +39,7 @@ export default function Clients() {
           Who We Work With
         </p>
         <h2 className="font-heading font-bold text-3xl sm:text-4xl text-brand-text text-center mb-4">
-          Our Clients & Partners
+          Our Clients
         </h2>
         <p className="text-gray-500 text-center max-w-2xl mx-auto mb-16">
           Trusted by leading contractors and project owners across Canada.
