@@ -135,6 +135,7 @@ const company = {
     {
       id: 'elliott',
       name: 'Elliott Underground',
+      location: "Lisle, ON",
       logo: elliottLogo,
       url: 'https://elliottunderground.com/',
     },
