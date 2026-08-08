@@ -18,10 +18,12 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Image */}
           <div className="relative">
+            {/* Portrait source: bias the crop low so the crew member and the
+                completed casings stay in frame rather than the sky. */}
             <img
               src={company.aboutImage}
-              alt="Industrial work site"
-              className="w-full h-[420px] object-cover rounded-sm shadow-xl"
+              alt="MCGS crew member at a shored launch pit beside completed casings carrying product pipe bundles"
+              className="w-full h-[420px] md:h-[520px] object-cover object-[50%_72%] rounded-sm shadow-xl"
               loading="lazy"
             />
             {/* Decorative accent */}
