@@ -29,18 +29,31 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
-        {/* Brand mark — the glow lifts the navy lettering off the dark overlay */}
-        <img
-          src={logo}
-          alt={company.companyName}
-          className="h-32 md:h-40 w-auto mx-auto mb-8"
-          style={{
-            filter:
-              'drop-shadow(0 0 18px rgba(255,255,255,0.45)) drop-shadow(0 6px 16px rgba(0,0,0,0.5))',
-          }}
-        />
+        {/* Brand mark — seated on a white disc so the navy lettering never has
+            to compete with the blue-tinted overlay behind it */}
+        <div className="relative inline-flex items-center justify-center mb-8">
+          {/* Soft halo so the disc settles into the photo instead of pasting onto it */}
+          {/* The PNG carries uneven transparent margin (≈5.6% sides, 10% top,
+              4.8% bottom), so the disc is inset to the circular artwork itself
+              rather than padded off the image box. */}
+          <div
+            className="absolute rounded-full bg-white/15 blur-2xl"
+            style={{ top: '4.5%', bottom: '0.5%', left: '2.5%', right: '2.5%' }}
+            aria-hidden="true"
+          />
+          <div
+            className="absolute rounded-full bg-white/55 shadow-md"
+            style={{ top: '4.5%', bottom: '0.5%', left: '2.5%', right: '2.5%' }}
+            aria-hidden="true"
+          />
+          <img
+            src={logo}
+            alt={company.companyName}
+            className="relative block h-40 md:h-52 lg:h-60 w-auto"
+          />
+        </div>
 
-        <h1 className="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
+        <h1 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-snug mb-5 max-w-4xl mx-auto">
           {company.tagline.split(' & ').map((part, i, arr) => (
             <span key={i}>
               {part}
@@ -54,7 +67,7 @@ export default function Hero() {
           ))}
         </h1>
 
-        <p className="text-lg sm:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg text-white/75 mb-10 max-w-2xl mx-auto">
           {company.subtagline}
         </p>
 

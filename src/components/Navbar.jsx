@@ -25,17 +25,26 @@ export default function Navbar() {
           scrolled ? 'h-16' : 'h-24'
         }`}
       >
-        {/* Logo — hidden while the bar is transparent so it doesn't compete
-            with the large hero mark; fades in with the white bar on scroll */}
-        <a
-          href="#hero"
-          aria-hidden={!scrolled}
-          tabIndex={scrolled ? 0 : -1}
-          className={`flex items-center gap-2 transition-opacity duration-300 ${
-            scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
-        >
-          <img src={logo} alt={company.shortName} className="h-14 w-auto" />
+        {/* Logo — larger at rest, shrinks once the page scrolls. Over the dark
+            hero it gets the same white disc as the hero mark; the disc fades
+            out once the bar turns white and no longer needs it. */}
+        <a href="#hero" className="flex items-center gap-2">
+          <span className="relative inline-flex items-center justify-center">
+            <span
+              className={`absolute rounded-full bg-white/55 shadow-md transition-opacity duration-300 ${
+                scrolled ? 'opacity-0' : 'opacity-100'
+              }`}
+              style={{ top: '4.5%', bottom: '0.5%', left: '2.5%', right: '2.5%' }}
+              aria-hidden="true"
+            />
+            <img
+              src={logo}
+              alt={company.shortName}
+              className={`relative block w-auto transition-all duration-300 ${
+                scrolled ? 'h-14' : 'h-20'
+              }`}
+            />
+          </span>
         </a>
 
         {/* Desktop links */}
