@@ -45,8 +45,8 @@ const company = {
   // ─── Identity ───────────────────────────────────────────────────────────────
   companyName: 'Marbel Contracting & General Services',
   shortName: 'MCGS',
-  tagline: 'Reliable Manpower for Horizontal Tunneling & Drilling Solutions',
-  subtagline: 'Supporting Canadian underground horizontal drilling projects',
+  tagline: 'Reliable Manpower for Horizontal Augering and Tunneling Trenchless Solutions',
+  subtagline: 'Supporting Canadian trenchless horizontal drilling projects',
   businessNumber: '',
   gstNumber: '',
 

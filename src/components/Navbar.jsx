@@ -20,10 +20,22 @@ export default function Navbar() {
         scrolled ? 'bg-white shadow-md' : 'bg-transparent'
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
-        {/* Logo */}
-        <a href="#hero" className="flex items-center gap-2">
-          <img src={logo} alt={company.shortName} className="h-16 w-auto" />
+      <nav
+        className={`max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-300 ${
+          scrolled ? 'h-16' : 'h-24'
+        }`}
+      >
+        {/* Logo — hidden while the bar is transparent so it doesn't compete
+            with the large hero mark; fades in with the white bar on scroll */}
+        <a
+          href="#hero"
+          aria-hidden={!scrolled}
+          tabIndex={scrolled ? 0 : -1}
+          className={`flex items-center gap-2 transition-opacity duration-300 ${
+            scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <img src={logo} alt={company.shortName} className="h-14 w-auto" />
         </a>
 
         {/* Desktop links */}

@@ -1,4 +1,5 @@
 import company from '../config/company'
+import logo from '../assets/mcgs-logo-transparent.png'
 
 export default function Hero() {
   return (
@@ -28,6 +29,17 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
+        {/* Brand mark — the glow lifts the navy lettering off the dark overlay */}
+        <img
+          src={logo}
+          alt={company.companyName}
+          className="h-32 md:h-40 w-auto mx-auto mb-8"
+          style={{
+            filter:
+              'drop-shadow(0 0 18px rgba(255,255,255,0.45)) drop-shadow(0 6px 16px rgba(0,0,0,0.5))',
+          }}
+        />
+
         <h1 className="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
           {company.tagline.split(' & ').map((part, i, arr) => (
             <span key={i}>

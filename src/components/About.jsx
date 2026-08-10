@@ -26,12 +26,6 @@ export default function About() {
               className="w-full h-[420px] md:h-[520px] object-cover object-[50%_72%] rounded-sm shadow-xl"
               loading="lazy"
             />
-            {/* Decorative accent */}
-            <div
-              className="absolute -bottom-4 -right-4 w-32 h-32 rounded-sm opacity-20"
-              style={{ backgroundColor: 'var(--color-brand-blue)' }}
-              aria-hidden="true"
-            />
           </div>
 
           {/* Copy */}

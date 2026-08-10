@@ -10,9 +10,10 @@ This document explains how the website is built, what each piece does, and how t
 2. [Folder structure](#2-folder-structure)
 3. [The config file](#3-the-config-file)
 4. [Components](#4-components)
-5. [Styling system](#5-styling-system)
-6. [Deployment pipeline](#6-deployment-pipeline)
-7. [How to reuse for a new client](#7-how-to-reuse-for-a-new-client)
+5. [Shared behaviour: the overlay hook](#5-shared-behaviour-the-overlay-hook)
+6. [Styling system](#6-styling-system)
+7. [Deployment pipeline](#7-deployment-pipeline)
+8. [How to reuse for a new client](#8-how-to-reuse-for-a-new-client)
 
 ---
 
@@ -24,13 +25,17 @@ Sections from top to bottom:
 
 | # | Section | Purpose |
 |---|---------|---------|
-| 1 | **Navbar** | Sticky top navigation, links to each section |
-| 2 | **Hero** | Full-screen opening with headline and CTA button |
-| 3 | **About** | Company description with an industrial image |
-| 4 | **Services** | Four cards describing what the company offers |
+| 1 | **Navbar** | Sticky top navigation with logo, links to each section |
+| 2 | **Hero** | Full-screen opening with headline and two CTA buttons |
+| 3 | **About** | Company description with a field photo and trust badges |
+| 4 | **Services** | Six photo cards; clicking one opens a detail modal |
 | 5 | **Industries** | Grid of industries the company serves |
-| 6 | **CTA** | Bold call-to-action block with quote request button |
-| 7 | **Footer** | Contact details, nav links, legal info |
+| 6 | **Gallery** | Project photo grid with "view all" expansion and a lightbox |
+| 7 | **Clients** | Logo tiles for clients, linking to their sites |
+| 8 | **Contact** | Brand-blue block with contact details and a working enquiry form |
+| 9 | **Footer** | Contact details, nav links, legal info |
+
+Component order is set in `src/App.jsx`. `Navbar` and `Footer` sit outside `<main>`; everything else is inside it.
 
 ---
 
@@ -44,11 +49,32 @@ mcgs-site/
 │       └── deploy.yml          # Auto-deployment to GitHub Pages
 │
 ├── public/
-│   └── favicon.svg             # Browser tab icon (blue "M")
+│   ├── CNAME                   # Custom domain — copied into dist on build
+│   ├── favicon.ico
+│   ├── favicon-16.png
+│   ├── favicon-32.png
+│   └── apple-touch-icon.png
 │
 ├── src/
 │   ├── config/
 │   │   └── company.js          ← THE ONE FILE YOU EDIT PER CLIENT
+│   │
+│   ├── assets/
+│   │   ├── hero.jpg
+│   │   ├── about.jpg
+│   │   ├── mcgs-logo.png
+│   │   ├── mcgs-logo-transparent.png   # used in Navbar + Footer
+│   │   ├── york1-logo.svg              # client logos
+│   │   ├── sovereign-logo.png
+│   │   ├── elliott-logo.png
+│   │   ├── services/                   # one photo per service card
+│   │   │   ├── horizontal-augering.jpg
+│   │   │   ├── guided-boring-machine.jpg
+│   │   │   ├── pipe-ramming.jpg
+│   │   │   ├── hand-tunneling.jpg
+│   │   │   ├── product-pipe-installation.jpg
+│   │   │   └── casing-grouting.jpg
+│   │   └── gallery/                    # project-NN.jpg — auto-discovered
 │   │
 │   ├── components/
 │   │   ├── Navbar.jsx
@@ -56,8 +82,13 @@ mcgs-site/
 │   │   ├── About.jsx
 │   │   ├── Services.jsx
 │   │   ├── Industries.jsx
-│   │   ├── CTA.jsx
+│   │   ├── Gallery.jsx
+│   │   ├── Clients.jsx
+│   │   ├── Contact.jsx
 │   │   └── Footer.jsx
+│   │
+│   ├── hooks/
+│   │   └── useOverlay.js       # Escape / arrow keys / scroll lock for modals
 │   │
 │   ├── App.jsx                 # Assembles all components in order
 │   ├── index.css               # Tailwind import + brand color tokens
@@ -74,7 +105,11 @@ mcgs-site/
 company.js  →  imported by each component  →  rendered on screen
 ```
 
-No component contains hardcoded client text. Every piece of content — company name, phone number, service descriptions, industry labels — comes from `company.js`.
+No component contains hardcoded client contact details, service copy, or industry labels — those all come from `company.js`. A few section headings and intro sentences ("What We Do", "Our experience spans the major sectors…") do live in the JSX; see the note in section 8.
+
+### Images are bundled, not hotlinked
+
+All photos are imported from `src/assets/` in `company.js` (or directly in the component, for the logo). Vite fingerprints and bundles them at build time. There are no external image URLs.
 
 ---
 
@@ -88,46 +123,69 @@ No component contains hardcoded client text. Every piece of content — company 
 Identity      companyName, shortName, tagline, subtagline
               businessNumber, gstNumber
 
-Contact       phone, email, address
+Contact       phone, email, address, web3formsKey
 
 Brand         primaryColor, accentColor
 
 Navigation    navLinks  →  array of { label, href }
 
-Hero          heroImage (URL), heroCtaLabel, heroCtaHref
+Hero          heroImage, heroCtaLabel, heroCtaHref
 
-About         aboutImage (URL), aboutParagraphs (array of strings)
+About         aboutImage, aboutParagraphs (array of strings)
 
-Services      services  →  array of { id, icon, title, description }
+Services      services  →  array of { id, icon, image, title, description, details[] }
+
+Gallery       gallery  →  auto-generated (see below)
 
 Industries    industries  →  array of { id, icon, label }
+
+Clients       clients  →  array of { id, name, location, logo, url }
 
 CTA           ctaHeading, ctaLabel, ctaHref
 
 Footer        footerTagline, copyrightYear
 ```
 
-### Icons
+### The gallery builds itself
 
-Icons come from the `react-icons` library and are imported directly in `company.js`. The icon field in each service or industry object holds the **component itself**, not a string name. This means you import it at the top of the config file and assign it:
+The `gallery` array is not hand-written. `company.js` uses Vite's `import.meta.glob` to pick up every `.jpg` in `src/assets/gallery/`, sorted by filename:
 
 ```js
-import { FaHardHat } from 'react-icons/fa'
+const galleryImages = import.meta.glob('../assets/gallery/*.jpg', {
+  eager: true,
+  import: 'default',
+})
+```
+
+**To add a photo:** drop a `project-NN.jpg` into `src/assets/gallery/` and push. No code change. Numbering gaps are fine (the current set skips `project-19`). Only `.jpg` is matched — a `.png` or `.jpeg` will be silently ignored.
+
+### Icons
+
+Icons come from the `react-icons` library and are imported directly in `company.js`. The `icon` field holds the **component itself**, not a string name:
+
+```js
+import { GiDrill } from 'react-icons/gi'
 
 services: [
-  { id: 'manpower', icon: FaHardHat, title: 'Manpower Supply', ... }
+  { id: 'augering', icon: GiDrill, title: 'Horizontal Augering / Jack & Bore', ... }
 ]
 ```
 
+Services and industries currently use the `gi` (Game Icons) set. The `fa` set is used inside components for UI chrome — arrows, close buttons, contact icons.
+
 To change an icon, find a new one at **react-icons.github.io**, import it, and swap it in.
 
-### Placeholder fields
+### Service `details`
 
-`phone`, `email`, `businessNumber`, and `gstNumber` are currently empty strings (`''`). The components handle this gracefully:
-- If phone/email are empty, the Footer shows "coming soon" in grey italic.
-- The CTA email button falls back to `info@example.com` until a real email is set.
+Each service carries a `details` array of short sentences. These are only rendered inside the service modal, under an "About This Method" heading. If a service has no `details`, that block is skipped and the modal just shows the photo, title, description, and CTA.
 
-Fill these in whenever the client is ready.
+### Contact form key
+
+`web3formsKey` is the public access key for the [Web3Forms](https://web3forms.com) submission endpoint. It's designed to be exposed client-side — it identifies the destination inbox, not an account. Regenerate it at web3forms.com if the destination email changes.
+
+### Empty-field handling
+
+`businessNumber` and `gstNumber` are currently empty strings and simply don't render. `phone` and `email` fall back to greyed-out "coming soon" lines in the Footer if cleared, and the Contact section hides its contact block entirely if both are empty.
 
 ---
 
@@ -138,17 +196,14 @@ Fill these in whenever the client is ready.
 **File:** `src/components/Navbar.jsx`
 
 **Behaviour:**
-- Fixed to the top of the screen at all times (sticky).
-- When the page loads at the top — transparent background, white text (so it blends into the hero image).
-- As soon as the user scrolls 40px down — switches to a white background with dark text and a subtle shadow.
-- This transition is animated (300ms).
+- Fixed to the top of the screen at all times.
+- At the top of the page — transparent background, white link text (blends into the hero image).
+- After scrolling 40px — switches to a white background with dark text and a shadow, animated over 300ms.
+- Shows the transparent-background MCGS logo rather than a text wordmark.
 
-**Mobile:**
-- On small screens, nav links are hidden and replaced with a hamburger button (three lines).
-- Tapping it opens a white dropdown with all links and the CTA button.
-- The hamburger animates into an X when open.
+**Mobile:** Nav links collapse into a hamburger button that opens a white dropdown; the hamburger animates into an X. Tapping any link closes the menu.
 
-**What it reads from config:** `shortName`, `navLinks`, `heroCtaHref`
+**What it reads from config:** `shortName` (logo alt text), `navLinks`, `heroCtaHref`
 
 ---
 
@@ -158,22 +213,22 @@ Fill these in whenever the client is ready.
 
 **What it renders:**
 - Full-screen section (100vh minimum height).
-- Background: the `heroImage` URL, cropped and centered.
+- Background: the `heroImage` asset, cropped and centered.
 - Two overlays stacked on top:
-  1. A dark gradient (`black/70` to `black/40`) for readability.
-  2. A semi-transparent brand-blue tint (30% opacity) for brand cohesion.
-- Centered content: eyebrow label → headline → subheading → two buttons.
+  1. A dark gradient (`black/70` → `black/40`) for readability.
+  2. A brand-blue tint at 30% opacity, pulled from `primaryColor`.
+- Centered content: headline → subheading → two buttons.
 
-**Headline rendering:**  
-The tagline `"Reliable Manpower & Drilling Solutions"` is split on ` & ` so the `&` renders in brand red. This is done in code — if you change the tagline in config to something without `&`, it just renders as plain text.
+**Headline rendering:**
+The tagline is split on ` & ` so any `&` renders in brand red. This is done in code — a tagline without `&` (like the current one) just renders as plain text.
 
 **Buttons:**
-1. **Request a Quote** — red, solid, links to `#contact`
+1. **Request a Quote** (`heroCtaLabel`) — red, solid, links to `heroCtaHref` (`#contact`)
 2. **Learn More** — ghost (white border), links to `#about`
 
-**Scroll indicator:** A faint "SCROLL" label with an animated white line at the bottom of the section.
+**Scroll indicator:** A faint "SCROLL" label with an animated white line at the bottom.
 
-**What it reads from config:** `heroImage`, `subtagline`, `tagline`, `heroCtaLabel`, `heroCtaHref`, `shortName`
+**What it reads from config:** `heroImage`, `primaryColor`, `tagline`, `subtagline`, `heroCtaLabel`, `heroCtaHref`
 
 ---
 
@@ -181,13 +236,13 @@ The tagline `"Reliable Manpower & Drilling Solutions"` is split on ` & ` so the 
 
 **File:** `src/components/About.jsx`
 
-**Layout:** Two equal columns side by side on desktop, stacked on mobile.
+**Layout:** Centered "Who We Are" label and heading, then two equal columns on desktop, stacked on mobile.
 
-**Left column:** Industrial photo (`aboutImage`) at a fixed height (420px), object-fit cover so it never distorts. A small decorative blue square sits behind the bottom-right corner.
+**Left column:** Field photo (`aboutImage`), 420px tall on mobile and 520px on desktop, `object-cover` with the crop biased low (`object-[50%_72%]`) so the crew member and casings stay in frame instead of sky. A decorative blue square sits behind the bottom-right corner.
 
-**Right column:** Company name as a subheading, then the `aboutParagraphs` array rendered as separate `<p>` tags. Below that, three "trust badges" — short bold labels with a descriptor line underneath (Safety / Alberta / Proven).
+**Right column:** Company name as a subheading, then `aboutParagraphs` rendered as separate `<p>` tags, followed by three trust badges — **Safety** / **Canadian** / **Proven**. The badge labels are hardcoded in the component.
 
-**What it reads from config:** `aboutImage`, `companyName`, `shortName`, `aboutParagraphs`
+**What it reads from config:** `shortName`, `aboutImage`, `companyName`, `aboutParagraphs`
 
 ---
 
@@ -195,17 +250,19 @@ The tagline `"Reliable Manpower & Drilling Solutions"` is split on ` & ` so the 
 
 **File:** `src/components/Services.jsx`
 
-**Layout:** Four cards in a row on desktop (2×2 on tablet, stacked on mobile).
+**Layout:** Responsive grid — one column on mobile, two on tablet, three on desktop. Six cards.
 
-**Each card contains:**
-- Icon in a lightly tinted blue square
-- Service title
-- Service description
-- A short red underline that grows wider on hover (hover animation)
+**Each card is a button** (not a div) so it's keyboard-focusable, and contains:
+- A 16:10 photo header that scales up slightly on hover
+- A circular icon badge overlapping the bottom edge of the photo
+- Service title and description
+- A red "Learn more →" affordance whose arrow slides right on hover
 
-**Hover effect:** The card lifts slightly (`-translate-y-1`) and deepens its shadow. The red underline animates from 8px to 16px wide.
+**Hover effect:** The card lifts (`-translate-y-1`) and deepens its shadow.
 
-**What it reads from config:** `services` array — each item needs `id`, `icon`, `title`, `description`
+**Service modal:** Clicking a card opens a centered dialog with the full photo, title, description, the `details` bullet list under "About This Method", and a Request a Quote button that closes the modal and jumps to `#contact`. Close via the X, clicking the backdrop, or pressing Escape. Background scrolling is locked while it's open (see [useOverlay](#5-shared-behaviour-the-overlay-hook)).
+
+**What it reads from config:** `services` array (`id`, `icon`, `image`, `title`, `description`, `details`), plus `ctaHref` and `ctaLabel` for the modal button
 
 ---
 
@@ -215,27 +272,55 @@ The tagline `"Reliable Manpower & Drilling Solutions"` is split on ` & ` so the 
 
 **Layout:** 2×2 grid on mobile, four across on desktop.
 
-**Each tile contains:**
-- A circular icon container with a blue tint background
-- The icon (scales up slightly on hover)
-- Industry label
+**Each tile:** A circular icon container with a blue tint, the icon (scales up on hover), and the industry label. Tiles lift on hover but are not clickable.
 
 **What it reads from config:** `industries` array — each item needs `id`, `icon`, `label`
 
 ---
 
-### CTA
+### Gallery
 
-**File:** `src/components/CTA.jsx`
+**File:** `src/components/Gallery.jsx`
 
-**What it renders:**
-- Full-width section with brand blue background.
-- Centred text: eyebrow → large heading → subtext → red CTA button.
-- If `phone` or `email` are set in config, they appear as clickable links below the button.
+**Layout:** 2 columns on mobile, 3 on desktop, 4:3 tiles.
 
-**The CTA button** links to `mailto:` using the email from config. When email is empty it uses `info@example.com` as a fallback so the button still works for testing.
+**Progressive disclosure:** Only the first **9** photos show initially (`INITIAL_COUNT` at the top of the file). A "View All *N* Photos" button reveals the rest — the count comes from the actual number of files in the gallery folder.
 
-**What it reads from config:** `ctaHeading`, `ctaLabel`, `ctaHref`, `email`, `phone`
+**Lightbox:** Clicking a photo opens a full-screen viewer with previous/next arrows, a close button, and an "*n* / *total*" counter. Navigation wraps around at both ends. Arrow keys move between photos, Escape closes, and clicking the backdrop closes.
+
+All images use `loading="lazy"`, so the extra photos cost nothing until they scroll into view.
+
+**What it reads from config:** `gallery` array
+
+---
+
+### Clients
+
+**File:** `src/components/Clients.jsx`
+
+**Layout:** Centered flex-wrap row of logo tiles — full width on mobile, two-up on small screens, fixed 16rem tiles on desktop.
+
+**Each tile:** The client logo (greyscale, turning full colour on hover) with the location underneath in small uppercase text. If `url` is set the tile renders as an `<a>` opening in a new tab with `rel="noopener noreferrer"`; without a `url` it's a plain `div`. If a client has no `logo`, the name renders as text instead.
+
+**What it reads from config:** `clients` array — `id`, `name`, `location`, `logo`, `url`
+
+---
+
+### Contact
+
+**File:** `src/components/Contact.jsx`
+
+This replaced the old CTA section — it keeps the brand-blue block and adds a working form.
+
+**Layout:** Two columns on desktop, stacked on mobile.
+
+**Left:** "Get In Touch" label, the `ctaHeading`, a short intro line, and clickable `tel:` / `mailto:` links for `phone` and `email`.
+
+**Right:** A white card holding the enquiry form — name, email, phone (optional), and message. It posts to `https://api.web3forms.com/submit` using `web3formsKey`, with the subject line built from `shortName`. A hidden `botcheck` honeypot field deters spam bots.
+
+**States:** The submit button reads "Sending…" and is disabled while in flight. On success a green confirmation appears and the form resets; on failure a red message points the visitor at the email address directly.
+
+**What it reads from config:** `ctaHeading`, `phone`, `email`, `web3formsKey`, `shortName`
 
 ---
 
@@ -247,19 +332,38 @@ The tagline `"Reliable Manpower & Drilling Solutions"` is split on ` & ` so the 
 
 | Column | Contents |
 |--------|---------|
-| Brand | Short name, full company name, footer tagline |
+| Brand | MCGS logo, full company name, footer tagline |
 | Navigation | Repeat of the navbar links |
-| Contact | Address (always shown), phone, email, business number, GST number |
+| Contact | Address, phone, email (each with an icon), business number, GST number |
 
 **Smart placeholders:** Phone and email show as greyed-out italic "coming soon" if the config fields are empty. Business/GST numbers only appear if they have a value.
 
-**Bottom bar:** Copyright year (auto-calculated) and city/country.
+**Bottom bar:** Copyright year (auto-calculated via `new Date().getFullYear()`) and "Calgary, Alberta, Canada" — the city line is hardcoded in the component.
 
 **What it reads from config:** `shortName`, `companyName`, `footerTagline`, `navLinks`, `address`, `phone`, `email`, `businessNumber`, `gstNumber`, `copyrightYear`
 
 ---
 
-## 5. Styling system
+## 5. Shared behaviour: the overlay hook
+
+**File:** `src/hooks/useOverlay.js`
+
+Both full-screen overlays — the gallery lightbox and the service detail modal — share one hook:
+
+```js
+useOverlay(isOpen, { onClose, onPrev, onNext })
+```
+
+While `isOpen` is true it:
+- Closes on **Escape**
+- Calls `onPrev` / `onNext` on **←** / **→** (the service modal omits these)
+- Sets `document.body.style.overflow = 'hidden'` so the page behind doesn't scroll, restoring the previous value on cleanup
+
+Pass memoized callbacks (`useCallback`) so the key listener isn't rebound on every render. Both current callers do this.
+
+---
+
+## 6. Styling system
 
 ### Tailwind CSS v4
 
@@ -267,7 +371,7 @@ This project uses **Tailwind CSS v4**, which works differently from v3:
 
 - No `tailwind.config.js` file.
 - Configuration lives inside `src/index.css` in a `@theme {}` block.
-- Brand tokens are defined there and automatically become Tailwind utility classes.
+- Brand tokens defined there automatically become Tailwind utility classes **and** CSS custom properties.
 
 ### Brand tokens
 
@@ -280,21 +384,31 @@ Defined in `src/index.css`:
   --color-brand-bg:   #f8fafc;   →  bg-brand-bg
   --color-brand-text: #1f2937;   →  text-brand-text
 
-  --font-heading: "Montserrat";  →  font-heading  (used on h1–h6)
-  --font-body:    "Inter";       →  font-body
+  --font-heading: "Montserrat";  →  font-heading  (applied to h1–h6 globally)
+  --font-body:    "Inter";       →  font-body     (applied to body globally)
 }
 ```
+
+Fonts are loaded from Google Fonts in `index.html`. `html { scroll-behavior: smooth }` is what makes the nav links glide rather than jump.
+
+### Three ways colors are referenced
+
+1. **Tailwind classes** — `bg-brand-red`, `text-brand-blue`. Preferred.
+2. **CSS variables in inline styles** — `style={{ color: 'var(--color-brand-blue)' }}`. Used where a value has to be dynamic or where Tailwind can't reach (e.g. the industry tile's `rgba(24,75,135,0.08)` tint, which hardcodes the blue).
+3. **Config values in inline styles** — `style={{ backgroundColor: company.primaryColor }}` in the Hero tint.
 
 ### Important: two places to update colors
 
 When changing brand colors for a new client, update **both**:
 
-1. `src/index.css` — `@theme` block (controls Tailwind utility classes)
-2. `src/config/company.js` — `primaryColor` and `accentColor` (used in inline `style={}` props for dynamic values that Tailwind can't handle at build time)
+1. `src/index.css` — the `@theme` block
+2. `src/config/company.js` — `primaryColor` and `accentColor`
+
+Also grep for the hardcoded `rgba(24,75,135,0.08)` in `Industries.jsx` — it won't follow the token.
 
 ---
 
-## 6. Deployment pipeline
+## 7. Deployment pipeline
 
 ### How it works
 
@@ -307,14 +421,16 @@ GitHub Actions triggers deploy.yml
   ↓
 Workflow runs:
   1. Checkout code
-  2. Install Node 20
+  2. Setup Node 20 (with npm cache)
   3. npm ci  (clean install from package-lock.json)
   4. npm run build  (Vite compiles everything to /dist)
   5. Upload /dist as a Pages artifact
   6. Deploy artifact to GitHub Pages
   ↓
-Site is live at:  https://mcgs.kcemanes.com
+Site is live
 ```
+
+The workflow can also be run manually via **workflow_dispatch** in the Actions tab. Concurrent runs are cancelled so only the latest push deploys.
 
 **Total time from push to live:** typically 2–3 minutes.
 
@@ -322,51 +438,74 @@ Site is live at:  https://mcgs.kcemanes.com
 
 In your repo on GitHub: **Settings → Pages → Source → GitHub Actions**
 
-That's the only setting you need to change. Everything else is automated.
-
 ### Custom domain
 
-Your domain `mcgs.kcemanes.com` needs a DNS record:
+The site is served at **`mcgsphilcan.ca`**.
 
-| Type | Name | Value |
-|------|------|-------|
-| CNAME | mcgs | `kfcemanes.github.io` |
+The domain lives in `public/CNAME`, which Vite copies verbatim into `dist/` on every build. That file is what actually reaches the deployed site — **if you change the domain, change it there.**
 
-Set this at your domain registrar. Then in GitHub Pages settings, enter `mcgs.kcemanes.com` as the custom domain and enable HTTPS.
+> ⚠️ **There is also a `CNAME` at the repo root**, written by the GitHub Pages UI when a custom domain is set there. It is *not* part of the build output and does not affect the deployed site. Both files currently read `mcgsphilcan.ca`; keep them in sync, because a stale root file looks authoritative and isn't.
+
+`mcgsphilcan.ca` is an apex (bare) domain, so DNS at the registrar needs **A records** pointing at GitHub's Pages IPs — `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` — or an ALIAS/ANAME record to `kfcemanes.github.io` if the registrar supports it. A plain CNAME record is not valid at the apex. Add a `www` CNAME to `kfcemanes.github.io` if you want `www.mcgsphilcan.ca` to work too. Then enter the domain in GitHub Pages settings and enable **Enforce HTTPS** once the certificate provisions.
+
+### Local development
+
+```
+npm install
+npm run dev       # Vite dev server with hot reload
+npm run build     # production build into /dist
+npm run preview   # serve the built /dist locally
+```
 
 ---
 
-## 7. How to reuse for a new client
+## 8. How to reuse for a new client
 
-The template is designed so that a new client deployment is a configuration exercise, not a development exercise.
+The template is designed so that a new client deployment is mostly a configuration exercise.
 
 ### Steps
 
 1. **Duplicate the repo** — create a new GitHub repo, copy the files, or use this as a template repo.
-2. **Edit `src/config/company.js`** — fill in the new client's name, tagline, contact info, services, and industries.
-3. **Update `src/index.css`** — change `--color-brand-blue` and `--color-brand-red` to the client's brand colors.
-4. **Replace images** — update `heroImage` and `aboutImage` URLs in the config.
-5. **Update `index.html`** — change the `<title>` and `<meta name="description">` to match the new client.
-6. **Set up GitHub Pages** on the new repo and configure the custom domain.
-7. **Push** — the site is live.
+2. **Edit `src/config/company.js`** — name, tagline, contact info, services, industries, clients.
+3. **Update `src/index.css`** — change `--color-brand-blue` and `--color-brand-red` to the client's brand colors, and check the hardcoded tint in `Industries.jsx`.
+4. **Replace images in `src/assets/`** — `hero.jpg`, `about.jpg`, the logo files, `services/*.jpg`, client logos, and the `gallery/` folder. Keep the filenames or update the imports in `company.js` to match.
+5. **Get a Web3Forms key** at web3forms.com for the client's inbox and set `web3formsKey`.
+6. **Update `index.html`** — `<title>`, `<meta name="description">`, and the favicons in `public/`.
+7. **Set `public/CNAME`** to the new domain, set up GitHub Pages, and point DNS.
+8. **Push** — the site is live.
 
 ### What you do NOT need to change
 
-- Any component file
 - `vite.config.js`
 - `deploy.yml`
 - `main.jsx`
-- `App.jsx`
+- `App.jsx` (unless you're adding or removing whole sections)
+- `useOverlay.js`
+
+### Copy that lives in components, not config
+
+These strings are hardcoded in JSX and need editing per client:
+
+| File | Hardcoded text |
+|------|----------------|
+| `About.jsx` | "Who We Are" label, trust badges (Safety / Canadian / Proven) |
+| `Services.jsx` | "What We Do", "Our Services", the intro paragraph, "Learn more", "About This Method" |
+| `Industries.jsx` | "Where We Work", "Industries We Serve", the intro paragraph |
+| `Gallery.jsx` | "Our Work", "Project Gallery", the intro paragraph, `INITIAL_COUNT` |
+| `Clients.jsx` | "Who We Work With", "Our Clients", the intro paragraph |
+| `Contact.jsx` | "Get In Touch", the intro line, all form placeholders and status messages |
+| `Footer.jsx` | "Navigation", "Contact" column headings, "Calgary, Alberta, Canada" |
+| `Navbar.jsx`, `Hero.jsx` | "Request a Quote" (Navbar), "Learn More" and "Scroll" (Hero) |
 
 ### Client type adaptability
 
 | Client type | Changes needed |
 |-------------|----------------|
-| Construction company | Config only |
-| Engineering firm | Config only |
-| Logistics company | Config only |
-| Law firm | Config + softer color palette in CSS |
-| Dental clinic | Config + colors + possibly swap industrial images for interior photos |
-| Accounting firm | Config + colors |
+| Construction company | Config + section copy |
+| Engineering firm | Config + section copy |
+| Logistics company | Config + section copy |
+| Law firm | Config + copy + softer color palette in CSS |
+| Dental clinic | Config + copy + colors + swap industrial photos for interiors |
+| Accounting firm | Config + copy + colors |
 
-The template avoids industry-specific vocabulary in component logic. Words like "manpower," "drilling," and "Alberta" live in config, not in JSX.
+Component *logic* stays industry-agnostic — words like "manpower," "tunneling," and "Calgary" appear only in config and in the section copy listed above, never in conditionals or data handling.
