@@ -20,10 +20,33 @@ export default function Navbar() {
         scrolled ? 'bg-white shadow-md' : 'bg-transparent'
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
-        {/* Logo */}
+      <nav
+        className={`max-w-7xl mx-auto px-6 flex items-center justify-between transition-all duration-300 ${
+          scrolled ? 'h-16' : 'h-24'
+        }`}
+      >
+        {/* Logo — larger at rest, shrinks once the page scrolls. Over the dark
+            hero it sits on a translucent white disc so the navy lettering stays
+            legible; the disc fades out once the bar turns white. The disc is
+            inset to the circular artwork (the PNG carries uneven transparent
+            margin: ≈5.6% sides, 10% top, 4.8% bottom) rather than padded. */}
         <a href="#hero" className="flex items-center gap-2">
-          <img src={logo} alt={company.shortName} className="h-16 w-auto" />
+          <span className="relative inline-flex items-center justify-center">
+            <span
+              className={`absolute rounded-full bg-white shadow-md transition-opacity duration-300 ${
+                scrolled ? 'opacity-0' : 'opacity-100'
+              }`}
+              style={{ top: '4.5%', bottom: '0.5%', left: '2.5%', right: '2.5%' }}
+              aria-hidden="true"
+            />
+            <img
+              src={logo}
+              alt={company.shortName}
+              className={`relative block w-auto transition-all duration-300 ${
+                scrolled ? 'h-14' : 'h-20'
+              }`}
+            />
+          </span>
         </a>
 
         {/* Desktop links */}

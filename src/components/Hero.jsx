@@ -28,21 +28,29 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white">
-        <h1 className="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
-          {company.tagline.split(' & ').map((part, i, arr) => (
+        <h1
+          className="font-heading font-extrabold text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] sm:leading-[1.05] tracking-tight mb-6 whitespace-pre-line"
+          style={{ textShadow: '0 3px 24px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.5)' }}
+        >
+          {/* Split on the bare ampersand so surrounding whitespace — including
+              any \n line break from the config — survives untouched. */}
+          {company.tagline.split('&').map((part, i, arr) => (
             <span key={i}>
               {part}
-              {i < arr.length - 1 && (
-                <>
-                  {' '}
-                  <span className="text-brand-red">&</span>{' '}
-                </>
-              )}
+              {i < arr.length - 1 && <span className="text-brand-red">&</span>}
             </span>
           ))}
         </h1>
 
-        <p className="text-lg sm:text-xl text-white/80 mb-10 max-w-2xl mx-auto whitespace-pre-line">
+        {/* Accent rule ties the sub-headline back to the brand red */}
+        <div className="flex justify-center mb-6">
+          <span className="block w-28 h-1.5 rounded-full bg-brand-red" aria-hidden="true" />
+        </div>
+
+        <p
+          className="font-heading font-bold text-lg sm:text-2xl md:text-3xl text-white leading-snug mb-10 max-w-3xl mx-auto whitespace-pre-line"
+          style={{ textShadow: '0 2px 14px rgba(0,0,0,0.55)' }}
+        >
           {company.subtagline}
         </p>
 
