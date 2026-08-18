@@ -72,8 +72,35 @@ export default function Hero() {
         <h1
           className="font-logo font-extrabold text-brand-blue text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-tight mb-6"
           style={{
-            textShadow:
-              '3px 0 0 #fff, -3px 0 0 #fff, 0 3px 0 #fff, 0 -3px 0 #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff, 0 0 28px rgba(255,255,255,0.35), 0 10px 30px rgba(0,0,0,0.55)',
+            // Michroma ships at weight 400 only, so font-extrabold is faux bold.
+            // A same-colour stroke genuinely fattens the navy letterforms to sit
+            // closer to the logo's heavy lettering. The white ring below is
+            // offset-based, so its thickness is unaffected.
+            WebkitTextStroke: '4px #184b87',
+            // The white ring is built from copies of the glyph offset in a
+            // circle. Sixteen evenly spaced directions with a 1px blur each
+            // keep the ring smooth — eight hard offsets left visible facets at
+            // the corners of the letterforms.
+            textShadow: [
+              '5px 0 1px #fff',
+              '4.6px 1.9px 1px #fff',
+              '3.5px 3.5px 1px #fff',
+              '1.9px 4.6px 1px #fff',
+              '0 5px 1px #fff',
+              '-1.9px 4.6px 1px #fff',
+              '-3.5px 3.5px 1px #fff',
+              '-4.6px 1.9px 1px #fff',
+              '-5px 0 1px #fff',
+              '-4.6px -1.9px 1px #fff',
+              '-3.5px -3.5px 1px #fff',
+              '-1.9px -4.6px 1px #fff',
+              '0 -5px 1px #fff',
+              '1.9px -4.6px 1px #fff',
+              '3.5px -3.5px 1px #fff',
+              '4.6px -1.9px 1px #fff',
+              '0 0 28px rgba(255,255,255,0.35)',
+              '0 10px 30px rgba(0,0,0,0.55)',
+            ].join(', '),
           }}
         >
           {company.tagline}
