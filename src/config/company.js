@@ -45,11 +45,15 @@ const company = {
   // ─── Identity ───────────────────────────────────────────────────────────────
   companyName: 'Marbel Contracting & General Services',
   shortName: 'MCGS',
-  // The space before & is a non-breaking space ( ) so the accent
-  // ampersand can never wrap onto a line by itself. \n forces a line break.
-  tagline: 'Marbel Contracting &\nGeneral Services',
-  // A \n forces a line break in the hero sub-headline.
-  subtagline: 'Reliable Manpower for Horizontal Augering and\nTunneling Trenchless Solutions',
+  // Hero headline: the MCGS mark itself, styled to echo the logo lettering.
+  tagline: 'MCGS',
+  // The space before & is a non-breaking space (U+00A0) so the accent
+  // ampersand can never wrap onto a line by itself.
+  subtagline: 'Marbel Contracting & General Services',
+  // Supporting line shown under the sub-headline in the hero.
+  // The newline forces "and ..." onto a second line.
+  heroSupport:
+    'Reliable Manpower for Horizontal Augering\nand Tunneling Trenchless Solutions',
   businessNumber: '',
   gstNumber: '',
 

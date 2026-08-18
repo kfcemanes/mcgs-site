@@ -1,5 +1,44 @@
 import company from '../config/company'
 
+/**
+ * Renders the company name with the letters that spell out the MCGS acronym
+ * picked out in the accent colour, so the headline reads as an abbreviation of
+ * the line beneath it. Walks the acronym in order and claims the first word
+ * whose initial matches, so "&" is skipped rather than consumed by "G".
+ */
+function renderAcronymHighlight(text, acronym) {
+  let cursor = 0
+  return text.split(/(\s+)/).map((token, i) => {
+    if (token === '&') {
+      return (
+        <span key={i} className="text-brand-red">
+          &
+        </span>
+      )
+    }
+    if (cursor < acronym.length && token.charAt(0).toUpperCase() === acronym[cursor]) {
+      cursor += 1
+      return (
+        <span key={i}>
+          {/* A thin white edge lifts the navy off the dark hero so the letter
+              reads as emphasised rather than faded. */}
+          <span
+            className="text-brand-blue font-extrabold"
+            style={{
+              textShadow:
+                '1px 0 0 #fff, -1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff, 1px 1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff, -1px -1px 0 #fff, 0 2px 12px rgba(0,0,0,0.5)',
+            }}
+          >
+            {token.charAt(0)}
+          </span>
+          {token.slice(1)}
+        </span>
+      )
+    }
+    return <span key={i}>{token}</span>
+  })
+}
+
 export default function Hero() {
   return (
     <section
@@ -28,18 +67,16 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center text-white">
+        {/* Headline is the MCGS mark itself: logo navy, outlined in white so
+            it reads against the dark hero the way the logo badge does. */}
         <h1
-          className="font-heading font-extrabold text-[clamp(1.875rem,9vw,2.25rem)] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] sm:leading-[1.05] tracking-tight mb-6 whitespace-pre-line"
-          style={{ textShadow: '0 3px 24px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.5)' }}
+          className="font-logo font-extrabold text-brand-blue text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-tight mb-6"
+          style={{
+            textShadow:
+              '3px 0 0 #fff, -3px 0 0 #fff, 0 3px 0 #fff, 0 -3px 0 #fff, 2px 2px 0 #fff, -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff, 0 0 28px rgba(255,255,255,0.35), 0 10px 30px rgba(0,0,0,0.55)',
+          }}
         >
-          {/* Split on the bare ampersand so surrounding whitespace — including
-              any \n line break from the config — survives untouched. */}
-          {company.tagline.split('&').map((part, i, arr) => (
-            <span key={i}>
-              {part}
-              {i < arr.length - 1 && <span className="text-brand-red">&</span>}
-            </span>
-          ))}
+          {company.tagline}
         </h1>
 
         {/* Accent rule ties the sub-headline back to the brand red */}
@@ -48,10 +85,17 @@ export default function Hero() {
         </div>
 
         <p
-          className="font-heading font-bold text-lg sm:text-2xl md:text-3xl text-white leading-snug mb-10 max-w-3xl mx-auto text-balance whitespace-normal sm:whitespace-pre-line"
+          className="font-heading font-bold text-xl sm:text-3xl md:text-4xl text-white leading-snug mb-4 max-w-3xl mx-auto text-balance"
           style={{ textShadow: '0 2px 14px rgba(0,0,0,0.55)' }}
         >
-          {company.subtagline}
+          {renderAcronymHighlight(company.subtagline, company.shortName)}
+        </p>
+
+        <p
+          className="text-base sm:text-lg text-white/80 leading-relaxed mb-10 max-w-2xl mx-auto whitespace-pre-line"
+          style={{ textShadow: '0 1px 10px rgba(0,0,0,0.5)' }}
+        >
+          {company.heroSupport}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

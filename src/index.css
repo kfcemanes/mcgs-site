@@ -2,6 +2,12 @@
 
 @theme {
   --font-heading: "Montserrat", sans-serif;
+  /* Logo lettering. Microgramma D Extended Bold is a commercial font that
+     cannot be embedded, so it renders only for viewers who have it (or
+     Eurostile) installed. Michroma is the free square-extended stand-in
+     everyone else gets; Montserrat is the last resort. */
+  --font-logo: "Microgramma D Extended Bold", "Microgramma D Extended",
+    "Eurostile Extended", "Eurostile", "Michroma", "Montserrat", sans-serif;
   --font-body: "Inter", sans-serif;
 
   --color-brand-blue: #184b87;
@@ -20,11 +26,15 @@ body {
   color: var(--color-brand-text);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading);
+/* Wrapped in @layer base so font-family utilities (font-logo, font-body, ...)
+   can override it. Unlayered rules beat anything in @layer utilities. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
 }
