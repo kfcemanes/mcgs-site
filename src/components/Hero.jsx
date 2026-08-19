@@ -69,41 +69,57 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center text-white">
         {/* Headline is the MCGS mark itself: logo navy, outlined in white so
             it reads against the dark hero the way the logo badge does. */}
-        <h1
-          className="font-logo font-extrabold text-brand-blue text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-tight mb-6"
-          style={{
-            // Michroma ships at weight 400 only, so font-extrabold is faux bold.
-            // A same-colour stroke genuinely fattens the navy letterforms to sit
-            // closer to the logo's heavy lettering. The white ring below is
-            // offset-based, so its thickness is unaffected.
-            WebkitTextStroke: '4px #184b87',
-            // The white ring is built from copies of the glyph offset in a
-            // circle. Sixteen evenly spaced directions with a 1px blur each
-            // keep the ring smooth — eight hard offsets left visible facets at
-            // the corners of the letterforms.
-            textShadow: [
-              '5px 0 1px #fff',
-              '4.6px 1.9px 1px #fff',
-              '3.5px 3.5px 1px #fff',
-              '1.9px 4.6px 1px #fff',
-              '0 5px 1px #fff',
-              '-1.9px 4.6px 1px #fff',
-              '-3.5px 3.5px 1px #fff',
-              '-4.6px 1.9px 1px #fff',
-              '-5px 0 1px #fff',
-              '-4.6px -1.9px 1px #fff',
-              '-3.5px -3.5px 1px #fff',
-              '-1.9px -4.6px 1px #fff',
-              '0 -5px 1px #fff',
-              '1.9px -4.6px 1px #fff',
-              '3.5px -3.5px 1px #fff',
-              '4.6px -1.9px 1px #fff',
-              '0 0 28px rgba(255,255,255,0.35)',
-              '0 10px 30px rgba(0,0,0,0.55)',
-            ].join(', '),
-          }}
-        >
-          {company.tagline}
+        <h1 className="font-logo font-extrabold text-brand-blue text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-tight mb-6">
+          {/* Two stacked copies rather than a text-shadow ring: Chrome includes
+              -webkit-text-stroke when it casts text-shadow but Safari does not,
+              which made the ring render inconsistently on iOS. Here the white
+              ring is a stroke on a copy sitting behind, so both engines paint it
+              the same way. Widths are in em so the ring stays proportional at
+              every breakpoint. */}
+          <span
+            className="relative inline-block"
+            style={{
+              filter:
+                'drop-shadow(0 0 28px rgba(255,255,255,0.35)) drop-shadow(0 10px 30px rgba(0,0,0,0.55))',
+            }}
+          >
+            {/* Ring from sixteen offset copies rather than a stroke: a stroke
+                miters sharp corners into spikes on the M apex, and this copy
+                carries no stroke, so Chrome and Safari cast identical shadows. */}
+            <span
+              aria-hidden="true"
+              className="absolute left-0 top-0 w-full select-none"
+              style={{
+                textShadow: [
+                  [0.06, 0],
+                  [0.055, 0.023],
+                  [0.042, 0.042],
+                  [0.023, 0.055],
+                  [0, 0.06],
+                  [-0.023, 0.055],
+                  [-0.042, 0.042],
+                  [-0.055, 0.023],
+                  [-0.06, 0],
+                  [-0.055, -0.023],
+                  [-0.042, -0.042],
+                  [-0.023, -0.055],
+                  [0, -0.06],
+                  [0.023, -0.055],
+                  [0.042, -0.042],
+                  [0.055, -0.023],
+                ]
+                  .map(([x, y]) => `${x}em ${y}em 0.008em #fff`)
+                  .join(', '),
+              }}
+            >
+              {company.tagline}
+            </span>
+            {/* Michroma ships at weight 400 only, so font-extrabold is faux
+                bold; a same-colour stroke fattens the navy for real. */}
+            <span className="relative" style={{ WebkitTextStroke: '0.04em #184b87' }}>
+              {company.tagline}
+            </span>
+          </span>
         </h1>
 
         {/* Accent rule ties the sub-headline back to the brand red */}
