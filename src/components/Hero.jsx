@@ -69,7 +69,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center text-white">
         {/* Headline is the MCGS mark itself: logo navy, outlined in white so
             it reads against the dark hero the way the logo badge does. */}
-        <h1 className="font-logo font-extrabold text-brand-blue text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-tight mb-6">
+        <h1 className="font-logo font-extrabold text-brand-blue text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-[0.08em] mb-6">
           {/* Two stacked copies rather than a text-shadow ring: Chrome includes
               -webkit-text-stroke when it casts text-shadow but Safari does not,
               which made the ring render inconsistently on iOS. Here the white
@@ -77,7 +77,7 @@ export default function Hero() {
               the same way. Widths are in em so the ring stays proportional at
               every breakpoint. */}
           <span
-            className="relative inline-block"
+            className="relative inline-block -mr-[0.08em]"
             style={{
               filter:
                 'drop-shadow(0 0 28px rgba(255,255,255,0.35)) drop-shadow(0 10px 30px rgba(0,0,0,0.55))',
