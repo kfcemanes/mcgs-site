@@ -63,27 +63,27 @@ function ServiceModal({ service, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 sm:p-6"
+      className="fixed inset-0 z-50 flex items-start sm:items-center justify-center overflow-y-auto bg-black/80 p-4 sm:p-6"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="service-modal-title"
     >
       <div
-        className="relative bg-white rounded-sm shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 p-1.5 sm:p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
         >
-          <FaTimes size={18} />
+          <FaTimes size={16} className="sm:w-[18px] sm:h-[18px]" />
         </button>
 
         {/* Photo */}
-        <div className="relative aspect-[16/9] bg-gray-100 overflow-hidden">
+        <div className="relative aspect-[21/9] sm:aspect-[16/9] bg-gray-100 overflow-hidden rounded-t-xl">
           <img
             src={service.image}
             alt={service.title}
@@ -95,35 +95,35 @@ function ServiceModal({ service, onClose }) {
           />
         </div>
 
-        <div className="relative p-8">
+        <div className="relative p-4 sm:p-8">
           <div
-            className="absolute -top-7 left-8 inline-flex items-center justify-center w-14 h-14 rounded shadow-md bg-white"
+            className="absolute -top-5 left-4 sm:-top-7 sm:left-8 inline-flex items-center justify-center w-10 h-10 sm:w-14 sm:h-14 rounded shadow-md bg-white"
             aria-hidden="true"
           >
-            <Icon size={28} style={{ color: 'var(--color-brand-blue)' }} />
+            <Icon size={20} className="sm:w-7 sm:h-7" style={{ color: 'var(--color-brand-blue)' }} />
           </div>
 
           <h3
             id="service-modal-title"
-            className="font-heading font-bold text-2xl text-brand-text mb-4 mt-8"
+            className="font-heading font-bold text-lg sm:text-2xl text-brand-text mb-2 sm:mb-4 mt-6 sm:mt-8"
           >
             {service.title}
           </h3>
 
-          <p className="text-gray-600 leading-relaxed mb-8">
+          <p className="text-gray-600 leading-relaxed text-sm sm:text-base mb-3 sm:mb-8">
             {service.description}
           </p>
 
           {service.details?.length > 0 && (
             <>
-              <p className="text-brand-red font-semibold text-xs tracking-[0.2em] uppercase mb-4">
+              <p className="text-brand-red font-semibold text-xs tracking-[0.2em] uppercase mb-2 sm:mb-4">
                 About This Method
               </p>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-1.5 sm:space-y-3 mb-3 sm:mb-8">
                 {service.details.map((detail) => (
-                  <li key={detail} className="flex gap-3 text-gray-600 text-sm leading-relaxed">
+                  <li key={detail} className="flex gap-3 text-gray-600 text-xs sm:text-sm leading-relaxed">
                     <span
-                      className="mt-2 shrink-0 w-1.5 h-1.5 rounded-full"
+                      className="mt-1.5 sm:mt-2 shrink-0 w-1.5 h-1.5 rounded-full"
                       style={{ backgroundColor: 'var(--color-brand-blue)' }}
                       aria-hidden="true"
                     />
@@ -137,7 +137,7 @@ function ServiceModal({ service, onClose }) {
           <a
             href={company.ctaHref}
             onClick={onClose}
-            className="inline-block px-8 py-4 bg-brand-red text-white font-semibold text-base rounded hover:bg-red-700 transition-colors duration-200 shadow-lg"
+            className="inline-block px-6 py-2.5 sm:px-8 sm:py-4 bg-brand-red text-white font-semibold text-sm sm:text-base rounded hover:bg-red-700 transition-colors duration-200 shadow-lg"
           >
             {company.ctaLabel}
           </a>

@@ -10,7 +10,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Michroma&family=Montserrat:wght@600;700;800&family=Orbitron:wght@700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&family=Orbitron:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Michroma is the large hero headline font (see --font-logo in index.css)
+         and the closest free stand-in for the logo's square extended lettering.
+         It is much wider than its fallback, so display=swap causes a visible
+         reflow jump; display=optional avoided the jump but skipped the font
+         outright on any uncached load, dropping the headline to Montserrat.
+         display=block holds the headline invisible for the brief block period
+         instead, so it only ever paints in the logo face. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Michroma&display=block"
       rel="stylesheet"
     />
     <title>Marbel Contracting & General Services</title>

@@ -39,6 +39,29 @@ function renderAcronymHighlight(text, acronym) {
   })
 }
 
+/**
+ * White ring around the headline letters, built from offset copies of the text
+ * rather than a stroke: -webkit-text-stroke miters the sharp M apex into a
+ * spike, and a copy that carries a stroke casts different shadows in Chrome and
+ * Safari. Sixteen copies left a visibly scalloped edge at hero sizes, so this is
+ * two concentric rings -- a dense outer one that sets the edge, an inner one
+ * that keeps the band solid behind it -- blurred just enough to fuse the copies
+ * into one smooth outline. Offsets are in em so the ring scales with the type.
+ */
+const LETTER_RING = [
+  [0.058, 36],
+  [0.03, 18],
+]
+  .flatMap(([radius, copies]) =>
+    Array.from({ length: copies }, (_, i) => {
+      const angle = (i / copies) * 2 * Math.PI
+      const x = (Math.cos(angle) * radius).toFixed(4)
+      const y = (Math.sin(angle) * radius).toFixed(4)
+      return `${x}em ${y}em 0.016em #fff`
+    })
+  )
+  .join(', ')
+
 export default function Hero() {
   return (
     <section
@@ -70,12 +93,11 @@ export default function Hero() {
         {/* Headline is the MCGS mark itself: logo navy, outlined in white so
             it reads against the dark hero the way the logo badge does. */}
         <h1 className="font-logo font-extrabold text-brand-blue text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-none tracking-[0.08em] mb-6">
-          {/* Two stacked copies rather than a text-shadow ring: Chrome includes
-              -webkit-text-stroke when it casts text-shadow but Safari does not,
-              which made the ring render inconsistently on iOS. Here the white
-              ring is a stroke on a copy sitting behind, so both engines paint it
-              the same way. Widths are in em so the ring stays proportional at
-              every breakpoint. */}
+          {/* Two stacked copies: the back one carries nothing but the white
+              LETTER_RING, the front one the navy letterform. Keeping the stroke
+              off the shadow-casting copy matters because Chrome includes
+              -webkit-text-stroke when it casts text-shadow and Safari does not,
+              which made the ring render inconsistently on iOS. */}
           <span
             className="relative inline-block -mr-[0.08em]"
             style={{
@@ -83,34 +105,10 @@ export default function Hero() {
                 'drop-shadow(0 0 28px rgba(255,255,255,0.35)) drop-shadow(0 10px 30px rgba(0,0,0,0.55))',
             }}
           >
-            {/* Ring from sixteen offset copies rather than a stroke: a stroke
-                miters sharp corners into spikes on the M apex, and this copy
-                carries no stroke, so Chrome and Safari cast identical shadows. */}
             <span
               aria-hidden="true"
               className="absolute left-0 top-0 w-full select-none"
-              style={{
-                textShadow: [
-                  [0.06, 0],
-                  [0.055, 0.023],
-                  [0.042, 0.042],
-                  [0.023, 0.055],
-                  [0, 0.06],
-                  [-0.023, 0.055],
-                  [-0.042, 0.042],
-                  [-0.055, 0.023],
-                  [-0.06, 0],
-                  [-0.055, -0.023],
-                  [-0.042, -0.042],
-                  [-0.023, -0.055],
-                  [0, -0.06],
-                  [0.023, -0.055],
-                  [0.042, -0.042],
-                  [0.055, -0.023],
-                ]
-                  .map(([x, y]) => `${x}em ${y}em 0.008em #fff`)
-                  .join(', '),
-              }}
+              style={{ textShadow: LETTER_RING }}
             >
               {company.tagline}
             </span>

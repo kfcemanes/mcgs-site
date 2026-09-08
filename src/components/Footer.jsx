@@ -9,7 +9,14 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand column */}
           <div>
-            <img src={logo} alt={company.shortName} className="h-14 w-auto" />
+            <span className="relative inline-flex items-center justify-center">
+              <span
+                className="absolute rounded-full bg-white shadow-md"
+                style={{ top: '4.5%', bottom: '0.5%', left: '2.5%', right: '2.5%' }}
+                aria-hidden="true"
+              />
+              <img src={logo} alt={company.shortName} className="relative block h-14 w-auto" />
+            </span>
             <p className="mt-3 text-gray-400 text-sm leading-relaxed max-w-xs">
               {company.companyName}
             </p>

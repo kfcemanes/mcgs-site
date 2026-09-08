@@ -3,11 +3,13 @@
 @theme {
   --font-heading: "Montserrat", sans-serif;
   /* Logo lettering. Microgramma D Extended Bold is a commercial font that
-     cannot be embedded, so it renders only for viewers who have it (or
-     Eurostile) installed. Michroma is the free square-extended stand-in
-     everyone else gets; Montserrat is the last resort. */
+     cannot be embedded, so it renders only for viewers who have it installed.
+     Michroma is the free square-extended stand-in everyone else gets, and it
+     sits ahead of plain Eurostile/Microgramma because the logo mark is the
+     extended cut: an extended stand-in beats a normal-width original.
+     Montserrat is the last resort. */
   --font-logo: "Microgramma D Extended Bold", "Microgramma D Extended",
-    "Eurostile Extended", "Eurostile", "Michroma", "Montserrat", sans-serif;
+    "Eurostile Extended", "Michroma", "Eurostile", "Montserrat", sans-serif;
   --font-body: "Inter", sans-serif;
 
   --color-brand-blue: #184b87;
